@@ -1,0 +1,104 @@
+﻿<html>
+<head>
+<title>raphael流程图-http://my.oschina.net/lichaoqiang/</title>
+<link type="text/css" href="css/jquery-ui.min.css" rel="stylesheet" />
+<script type="text/javascript" src="js/jquery.js" ></script>
+<script type="text/javascript" src="js/jquery-ui.min.js" ></script>
+<script type="text/javascript" src="js/raphael-min.js"></script>
+<script type="text/javascript" src="js/core.js"></script>
+<script type="text/javascript" src="js/common.js" ></script>
+<script type="text/javascript" src="js/workflow.js"></script>
+<style type="text/css">
+body {
+	margin: 0;
+	pading: 0;
+	text-align: left;
+	font-family: Arial, sans-serif, Helvetica, Tahoma;
+	font-size: 12px;
+	line-height: 1.5;
+	color: black;
+	background-image: url(img/bg_wf.png);
+}
+.node {
+	width: 70px;
+	text-align: center;
+	vertical-align: middle;
+	border: 1px solid #fff;
+}
+.mover {
+	border: 1px solid #ddd;
+	background-color: #ddd;
+}
+.selected {
+	background-color: #ddd;
+}
+#myflow_props th {
+	letter-spacing: 2px;
+	text-align: left;
+	padding: 6px;
+	background: #ddd;
+}
+#myflow_props td {
+	background: #fff;
+	padding: 6px;
+}
+#pointer {
+	background-repeat: no-repeat;
+	background-position: center;
+}
+#path {
+	background-repeat: no-repeat;
+	background-position: center;
+}
+#task {
+	background-repeat: no-repeat;
+	background-position: center;
+}
+#state {
+	background-repeat: no-repeat;
+	background-position: center;
+}
+</style>
+</head>
+<body>
+<div style="display:none;">
+<input type="hidden" coltype="S" id="htype" name="" value="[{&quot;id&quot;:&quot;start&quot;,&quot;src&quot;:&quot;img/48/start_event_empty.png&quot;,&quot;width&quot;:50,&quot;height&quot;:50},{&quot;id&quot;:&quot;userTask&quot;,&quot;src&quot;:&quot;img/48/task_empty.png&quot;,&quot;width&quot;:100,&quot;height&quot;:50},{&quot;id&quot;:&quot;fork&quot;,&quot;src&quot;:&quot;img/48/gateway_exclusive.png&quot;,&quot;width&quot;:50,&quot;height&quot;:50},{&quot;id&quot;:&quot;join&quot;,&quot;src&quot;:&quot;img/48/gateway_parallel.png&quot;,&quot;width&quot;:50,&quot;height&quot;:50},{&quot;id&quot;:&quot;end&quot;,&quot;src&quot;:&quot;img/48/end_event_terminate.png&quot;,&quot;width&quot;:50,&quot;height&quot;:50}]" style="display:none;">
+<input type="hidden" coltype="S" id="hinitData" name="" value="{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;&quot;,&quot;documentation&quot;:&quot;&quot;,&quot;executionlisteners&quot;:&quot;&quot;,&quot;process_id&quot;:&quot;&quot;,&quot;process_author&quot;: &quot;&quot;,&quot;process_executable&quot;: &quot;Yes&quot;,&quot;process_version&quot;: &quot;&quot;,&quot;process_namespace&quot;: &quot;http://www.activiti.org/processdef&quot;}" style="display:none;">
+<input type="hidden" coltype="S" id="hseltype" name="" value="0" style="display:none;">
+<input type="hidden" coltype="S" id="hselobj" name="" value="{&quot;from&quot;:&quot;&quot;,&quot;to&quot;:&quot;&quot;}" style="display:none;">
+<input type="hidden" coltype="S" id="hId" name="hId" value="20085ccc-18c9-11e5-a022-a01d48d28732" style="display:none;">
+<input type="hidden" coltype="S" id="hName" name="hName" style="display:none;">
+<input type="hidden" coltype="S" id="hDescription" name="hDescription" style="display:none;">
+<input type="hidden" coltype="S" id="hJsonXml" name="hJsonXml" style="display:none;">
+<input type="hidden" coltype="S" id="hInitWFData" name="hInitWFData" value="" style="display:none;">
+<input type="hidden" coltype="S" id="hmaxCount" name="hmaxCount" value="32" style="display:none;">
+<input type="hidden" coltype="S" id="hKey" name="hKey" style="display:none;" value="">
+</div>
+<div id="myflow_tools" style="position: absolute; top: 10; left: 10; background-color: #fff; width: 70px; cursor: default; padding: 3px;z-index:999;">
+  <div id="myflow_tools_handle" style="text-align: center;font-weight:bold;background: #cccccc 50% 50% repeat-x;border:1px solid #aaaaaa;">工具集</div>
+  <div class="node" id="myflow_save"><img src="img/save.gif" />&nbsp;&nbsp;保存</div>
+  <div>
+    <hr />
+  </div>
+  <div class="node selectable" id="pointer" > <img src="img/select16.gif" />&nbsp;&nbsp;选择</div>
+  <div class="node selectable" id="path"> <img src="img/16/flow_sequence.png" />&nbsp;&nbsp;连线</div>
+  <div>
+    <hr />
+  </div>
+  <div class="node state" id="start" type="start" text="开始"><img
+	src="img/16/start_event_empty.png" />&nbsp;&nbsp;开始</div>
+  <div class="node state" id="userTask" type="userTask" text="任务"><img
+	src="img/16/task_empty.png" />&nbsp;&nbsp;任务</div>
+  <div class="node state" id="fork" type="fork" text="分支"><img
+	src="img/16/gateway_exclusive.png" />&nbsp;&nbsp;分支</div>
+  <div class="node state" id="join" type="join" text="合并"><img
+	src="img/16/gateway_parallel.png" />&nbsp;&nbsp;合并</div>
+  <div class="node state" id="end" type="end" text="结束"><img
+	src="img/16/end_event_terminate.png" />&nbsp;&nbsp;结束</div>
+</div>
+<div id="myflow_props" style="position: absolute; top: 30; right: 50; background-color: #fff; width: 220px; padding: 3px;z-index:999;" class="ui-widget-content">
+ 
+</div>
+<div id="holder" style="width:100%;height:800px;"></div>
+</body>
+</html>
